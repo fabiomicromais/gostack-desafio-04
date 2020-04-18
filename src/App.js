@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import api from "./services/api";
 
 import {
   SafeAreaView,
@@ -9,7 +10,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import api from "./services/api";
+
 
 export default function App() {
    const [repositories, setRepositories] = useState([]);
@@ -24,18 +25,18 @@ export default function App() {
   async function handleLikeRepository(id) {
     // Implement "Like Repository" functionality
     const response = await api.post(`repositories/${id}/like`);
-     console.log(likedRepository);
+     console.log(response);
 
     const likedRepository = response.data; 
 
     const repositoriesUpdated = repositories.map( repository => {
-      if(repository.id ==id)  {
+      if(repository.id == id)  {  console.log(repository.id);
         return likedRepository;
       }  else {
          return repository;
       }
     });
-    setRepositories(repositoriesUpdated);
+       setRepositories(repositoriesUpdated);
     }
 
   return (
@@ -51,7 +52,7 @@ export default function App() {
               <Text style={styles.repository}>{repository.title}</Text>
 
               <View style={styles.techsContainer}>
-                {repository.techs.maps( tech => (
+                {repository.techs.map( tech => (
                 <Text key={tech} style={styles.tech}>
                 {tech}
                 </Text>                
@@ -64,7 +65,7 @@ export default function App() {
                   // Remember to replace "1" below with repository ID: {`repository-likes-${repository.id}`}
                   testID={`repository-likes-${repository.id}`}
                 >
-                  {repository.like}  curtidas
+                  {repository.likes}  curtidas
                 </Text>
               </View>
 
